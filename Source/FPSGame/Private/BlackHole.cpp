@@ -48,8 +48,5 @@ void ABlackHole::Tick(float DeltaTime)
 		{
 			OverlapingObject->AddRadialForce(GetActorLocation(), SuckingSphere->GetScaledSphereRadius(), SuckingStrenght, ERadialImpulseFalloff::RIF_Constant, true);
 		}
-
 	}
-
 }
-
