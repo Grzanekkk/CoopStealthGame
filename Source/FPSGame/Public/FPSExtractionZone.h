@@ -16,13 +16,14 @@ public:
 	AFPSExtractionZone();
 
 protected:
-	virtual void BeginPlay() override;
-
-	UPROPERTY(VisibleAnywhere)
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UBoxComponent* OverlapComp;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UDecalComponent* DecalComp;
 
+	UFUNCTION()
+	void HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor*OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	
 };

@@ -2,7 +2,10 @@
 
 
 #include "FPSExtractionZone.h"
+
+#include "AABBTree.h"
 #include "Components/BoxComponent.h"
+#include "Components/DecalComponent.h"
 
 // Sets default values
 AFPSExtractionZone::AFPSExtractionZone()
@@ -13,20 +16,18 @@ AFPSExtractionZone::AFPSExtractionZone()
 	OverlapComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	OverlapComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 	OverlapComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	OverlapComp->SetBoxExtent(FVector(300.0f));
 	RootComponent = OverlapComp;
+
+	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &AFPSExtractionZone::HandleOverlap);
+
+
+	DecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("Decal Component"));
+	DecalComp->DecalSize = FVector(300.f);
 }
 
-// Called when the game starts or when spawned
-void AFPSExtractionZone::BeginPlay()
+void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::BeginPlay();
-	
+	UE_LOG(LogTemp, Warning, TEXT("Overlapped with extraction zone!"));
 }
-
-// Called every frame
-void AFPSExtractionZone::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
