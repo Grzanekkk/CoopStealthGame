@@ -17,6 +17,7 @@ AFPSExtractionZone::AFPSExtractionZone()
 	OverlapComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 	OverlapComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	OverlapComp->SetBoxExtent(FVector(300.0f));
+	OverlapComp->SetHiddenInGame(false);
 	RootComponent = OverlapComp;
 
 	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &AFPSExtractionZone::HandleOverlap);
@@ -24,6 +25,9 @@ AFPSExtractionZone::AFPSExtractionZone()
 
 	DecalComp = CreateDefaultSubobject<UDecalComponent>(TEXT("Decal Component"));
 	DecalComp->DecalSize = FVector(300.f);
+	DecalComp->SetupAttachment(RootComponent);
+
+	UE_LOG(LogTemp, Warning, TEXT("Overlapped with extraction zone!"));
 }
 
 void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
