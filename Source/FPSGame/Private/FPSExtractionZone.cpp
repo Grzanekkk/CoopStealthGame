@@ -6,6 +6,7 @@
 #include "AABBTree.h"
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
+#include "FPSCharacter.h"
 
 // Sets default values
 AFPSExtractionZone::AFPSExtractionZone()
@@ -34,4 +35,11 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlapped with extraction zone!"));
+
+	AFPSCharacter* OverlapingPlayer = Cast<AFPSCharacter>(OtherActor);
+
+	if(OverlapingPlayer->bIsCarryingObjective)
+	{
+		
+	}
 }
