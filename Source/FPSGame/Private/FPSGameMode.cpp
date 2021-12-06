@@ -21,4 +21,6 @@ void AFPSGameMode::CompleteMission(APawn* InstigatroPawn)
 	{
 		InstigatroPawn->DisableInput(nullptr);
 	}
+
+	OnMissionCompleted(InstigatroPawn);
 }
