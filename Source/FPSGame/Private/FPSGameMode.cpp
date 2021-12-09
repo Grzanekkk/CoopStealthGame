@@ -20,6 +20,7 @@ void AFPSGameMode::CompleteMission(APawn* InstigatroPawn)
 	if(InstigatroPawn)
 	{
 		InstigatroPawn->DisableInput(nullptr);
+		APlayerController* PC = Cast<APlayerController>(InstigatroPawn->GetController());
 	}
 
 	OnMissionCompleted(InstigatroPawn);
