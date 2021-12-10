@@ -3,12 +3,30 @@
 
 #include "LaunchPad.h"
 
+#include "Components/BoxComponent.h"
+
+
 // Sets default values
 ALaunchPad::ALaunchPad()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	
+	OverlapComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Overlap Component"));
+	OverlapComp->SetBoxExtent(FVector(75,75, 50));
+	RootComponent = OverlapComp;
+	
+	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	MeshComp->SetupAttachment(RootComponent);
 
+	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::OverlapLaunchPad);
+
+	LaunchStrength = 1500.f;
+	LaunchAxis = 45.f;
+}
+
+void ALaunchPad::OverlapLaunchPad(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
 }
 
 // Called when the game starts or when spawned
@@ -24,4 +42,3 @@ void ALaunchPad::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
