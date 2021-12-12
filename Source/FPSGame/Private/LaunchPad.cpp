@@ -4,6 +4,8 @@
 #include "LaunchPad.h"
 
 #include "Components/BoxComponent.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -21,24 +23,29 @@ ALaunchPad::ALaunchPad()
 	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &ALaunchPad::OverlapLaunchPad);
 
 	LaunchStrength = 1500.f;
-	LaunchAxis = 45.f;
+	LaunchPitchAngle = 45.f;
 }
 
 void ALaunchPad::OverlapLaunchPad(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-}
+	FRotator LaunchDirection = GetActorRotation();
+	LaunchDirection.Pitch += LaunchPitchAngle;
+	FVector LaunchVelocity = LaunchDirection.Vector() * LaunchStrength;
 
-// Called when the game starts or when spawned
-void ALaunchPad::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
+	ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
+	if(OtherCharacter)		// Allows launching Characters
+	{
+		OtherCharacter->LaunchCharacter(LaunchVelocity, true, true);
 
-// Called every frame
-void ALaunchPad::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+		UGameplayStatics::SpawnEmitterAtLocation(this, LaunchFX, GetActorLocation());
+		UGameplayStatics::PlaySound2D(this, LaunchSound);
+	}
+	else if(OtherComp && OtherComp->IsSimulatingPhysics()) // Allows launching Physics props 
+	{
+		OtherComp->AddImpulse(LaunchVelocity, NAME_None, true);
 
+		UGameplayStatics::SpawnEmitterAtLocation(this, LaunchFX, GetActorLocation());
+		UGameplayStatics::PlaySound2D(this, LaunchSound);
+	}
 }

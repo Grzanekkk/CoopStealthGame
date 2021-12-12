@@ -10,8 +10,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b34ca3cb-f8c9-4998-abc1-1c7eddd9de3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_GameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/FPSGame/Private/LaunchPad.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Private/LaunchPad.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/FPSGame/Public/LaunchPad.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Public/LaunchPad.h" afterDir="false" />
     </list>
@@ -284,6 +284,7 @@
       <workItem from="1638964196763" duration="595000" />
       <workItem from="1639050497693" duration="1982000" />
       <workItem from="1639128515692" duration="5878000" />
+      <workItem from="1639333491689" duration="1826000" />
     </task>
     <servers />
   </component>

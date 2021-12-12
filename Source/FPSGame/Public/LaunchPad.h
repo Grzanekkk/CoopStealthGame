@@ -33,16 +33,8 @@ protected:
 	float LaunchStrength;
 
 	UPROPERTY(EditInstanceOnly, Category = "LaunchPad")
-	float LaunchAxis;
+	float LaunchPitchAngle;
 	
 	UFUNCTION()
 	void OverlapLaunchPad(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };
