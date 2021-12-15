@@ -20,8 +20,13 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	if(SeenPawn)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!"));
-		DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Orange, false, 10.f);
+		DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Red, false, 10.f);
 	}
+}
+
+void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
+{
+	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Orange, false, 10.f);
 }
 
 // Called when the game starts or when spawned
@@ -30,6 +35,7 @@ void AAIGuard::BeginPlay()
 	Super::BeginPlay();
 
 	SensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::OnPawnSeen);
+	SensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::OnNoiceHeard);
 }
 
 // Called every frame
