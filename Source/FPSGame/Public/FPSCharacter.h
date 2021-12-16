@@ -54,6 +54,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category="Gameplay")
 	bool bIsCarryingObjective;
 
+	//UFUNCTION(BlueprintPure)
+	//FORCEINLINE APawn* GetInstigator() const { return Instigator; }
+
 protected:
 	
 	/** Fires a projectile. */
