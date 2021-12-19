@@ -27,6 +27,15 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
 {
 	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Orange, false, 10.f);
+
+	FVector Direction = Location - GetActorLocation();
+	Direction.Normalize();
+
+	FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator();
+	NewLookAt.Pitch = 0.0f;
+	NewLookAt.Roll = 0.0f;
+
+	SetActorRotation(NewLookAt);
 }
 
 // Called when the game starts or when spawned
