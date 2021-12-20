@@ -15,7 +15,7 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 }
 
-void AFPSGameMode::CompleteMission(APawn* InstigatroPawn)
+void AFPSGameMode::CompleteMission(APawn* InstigatroPawn, bool bMissionSuccess)
 {
 	if(InstigatroPawn)
 	{
@@ -23,5 +23,5 @@ void AFPSGameMode::CompleteMission(APawn* InstigatroPawn)
 		APlayerController* PC = Cast<APlayerController>(InstigatroPawn->GetController());
 	}
 
-	OnMissionCompleted(InstigatroPawn);
+	OnMissionCompleted(InstigatroPawn, bMissionSuccess);
 }

@@ -28,6 +28,13 @@ protected:
 	UFUNCTION()
 	void OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume);
 
+	UFUNCTION()
+	void ResetOrinetation();
+	
+	FRotator OriginalRotation;
+	
+	FTimerHandle TimerHandle_ResetOrinatation;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

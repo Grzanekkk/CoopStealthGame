@@ -4,6 +4,7 @@
 #include "AIGuard.h"
 
 #include "DrawDebugHelpers.h"
+#include "FPSGameMode.h"
 #include "Perception/PawnSensingComponent.h"
 
 // Sets default values
@@ -22,6 +23,13 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!"));
 		DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Red, false, 10.f);
 	}
+
+	AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
+	if(GM)
+	{
+		GM->CompleteMission(SeenPawn, false);
+	}
+	
 }
 
 void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
@@ -36,6 +44,14 @@ void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, flo
 	NewLookAt.Roll = 0.0f;
 
 	SetActorRotation(NewLookAt);
+
+	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrinatation);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrinatation, this, &AAIGuard::ResetOrinetation, 3.0f);
+}
+
+void AAIGuard::ResetOrinetation()
+{
+	SetActorRotation(OriginalRotation);
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +59,8 @@ void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OriginalRotation = GetActorRotation();
+	
 	SensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::OnPawnSeen);
 	SensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::OnNoiceHeard);
 }
