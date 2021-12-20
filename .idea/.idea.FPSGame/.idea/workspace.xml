@@ -10,13 +10,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b34ca3cb-f8c9-4998-abc1-1c7eddd9de3c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FPSGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_GameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/UI/WBP_GameOver.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/UI/WBP_GameOver.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_AIGuard.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_AIGuard.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/FirstPersonExampleMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/FPSGame/Private/AIGuard.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Private/AIGuard.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/FPSGame/Private/FPSExtractionZone.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Private/FPSExtractionZone.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/FPSGame/Private/FPSGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Private/FPSGameMode.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/FPSGame/Public/AIGuard.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Public/AIGuard.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/FPSGame/Public/FPSGameMode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/FPSGame/Public/FPSGameMode.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,7 +290,7 @@
       <workItem from="1639694118491" duration="3653000" />
       <workItem from="1639836700637" duration="1205000" />
       <workItem from="1639926784433" duration="3735000" />
-      <workItem from="1639997344421" duration="6556000" />
+      <workItem from="1639997344421" duration="8256000" />
     </task>
     <servers />
   </component>

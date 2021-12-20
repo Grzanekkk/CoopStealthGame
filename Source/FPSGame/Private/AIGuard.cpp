@@ -14,12 +14,16 @@ AAIGuard::AAIGuard()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("Pawn Sensing Component"));
+
+	GuardState = EAIState::Idle;
 }
 
 void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 {
 	if(SeenPawn)
 	{
+		SetGuardState(EAIState::Alerted);
+		
 		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!"));
 		DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Red, false, 10.f);
 	}
@@ -34,6 +38,11 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 
 void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
 {
+	if(GuardState == EAIState::Alerted)	// If we are alerted we dont want to bother with noices
+		return;
+
+	SetGuardState(EAIState::Sus);
+	
 	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Orange, false, 10.f);
 
 	FVector Direction = Location - GetActorLocation();
@@ -52,6 +61,20 @@ void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, flo
 void AAIGuard::ResetOrinetation()
 {
 	SetActorRotation(OriginalRotation);
+
+	SetGuardState(EAIState::Idle);
+}
+
+void AAIGuard::SetGuardState(EAIState NewState)
+{
+	if(GuardState == NewState)
+	{
+		return;
+	}
+
+	GuardState = NewState;
+
+	OnStateChange(NewState);
 }
 
 // Called when the game starts or when spawned

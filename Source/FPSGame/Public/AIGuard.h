@@ -6,6 +6,15 @@
 #include "GameFramework/Character.h"
 #include "AIGuard.generated.h"
 
+UENUM()
+enum class EAIState : uint8
+{
+	Idle,
+	Sus,
+	Alerted
+};
+
+
 UCLASS()
 class FPSGAME_API AAIGuard : public ACharacter
 {
@@ -34,6 +43,13 @@ protected:
 	FRotator OriginalRotation;
 	
 	FTimerHandle TimerHandle_ResetOrinatation;
+
+	EAIState GuardState;
+
+	void SetGuardState(EAIState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void OnStateChange(EAIState NewState);
 
 public:	
 	// Called every frame
