@@ -40,20 +40,34 @@ protected:
 	UFUNCTION()
 	void ResetOrinetation();
 	
+	void SetGuardState(EAIState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void OnStateChange(EAIState NewState);
+
+	void MoveToNextPartolPoint();
+
+	
 	FRotator OriginalRotation;
 	
 	FTimerHandle TimerHandle_ResetOrinatation;
 
 	EAIState GuardState;
 
-	void SetGuardState(EAIState NewState);
+	UPROPERTY(EditInstanceOnly, Category = "AI")
+	bool bAllowToPatrol;
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
-	void OnStateChange(EAIState NewState);
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition = "bAllowToParol"))	// I know it should be an array 
+	AActor* FirstPatrolPoint;
+	
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition = "bAllowToParol"))
+	AActor* SecondPatrolPoint;
+
+	UPROPERTY()
+	AActor* CurrentPatrolPoint;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-
 };

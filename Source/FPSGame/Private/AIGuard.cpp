@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 // Sets default values
 AAIGuard::AAIGuard()
@@ -75,6 +76,20 @@ void AAIGuard::SetGuardState(EAIState NewState)
 	GuardState = NewState;
 
 	OnStateChange(NewState);
+}
+
+void AAIGuard::MoveToNextPartolPoint()
+{
+	if (CurrentPatrolPoint == nullptr || CurrentPatrolPoint == SecondPatrolPoint)	// I know, i know this code is garbage 
+	{
+		CurrentPatrolPoint = FirstPatrolPoint;
+	}
+	else
+	{
+		CurrentPatrolPoint = SecondPatrolPoint;
+	}
+
+	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
 }
 
 // Called when the game starts or when spawned
