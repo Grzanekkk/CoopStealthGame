@@ -50,7 +50,26 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AFPSCharacter::Fire()
 {
-	// try and fire a projectile
+	ServerFire(); // If called on the client, asks the server to execute this function
+	
+	if (FireSound)	// try and play the sound if specified
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+	
+	if (FireAnimation)	// try and play a firing animation if specified
+	{
+		// Get the animation object for the arms mesh
+		UAnimInstance* AnimInstance = Mesh1PComponent->GetAnimInstance();
+		if (AnimInstance)
+		{
+			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f);
+		}
+	}
+}
+
+void AFPSCharacter::ServerFire_Implementation()	// Executes only on the server
+{
 	if (ProjectileClass)
 	{
 		FVector MuzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
@@ -64,23 +83,11 @@ void AFPSCharacter::Fire()
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
 	}
+}
 
-	// try and play the sound if specified
-	if (FireSound)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1PComponent->GetAnimInstance();
-		if (AnimInstance)
-		{
-			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f);
-		}
-	}
+bool AFPSCharacter::ServerFire_Validate()	// Server functions need Validation
+{
+	return true; // Temporary
 }
 
 
