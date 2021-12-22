@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AIGuard.h"
 
 #include "DrawDebugHelpers.h"
@@ -21,20 +20,21 @@ AAIGuard::AAIGuard()
 
 void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 {
-	if(SeenPawn)
-	{
-		SetGuardState(EAIState::Alerted);
-		
-		UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!"));
-		DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Red, false, 10.f);
-	}
+	if(!SeenPawn)
+		return
+	
+	SetGuardState(EAIState::Alerted);		// If Guard saw you you loose!
+	
+	UE_LOG(LogTemp, Warning, TEXT("Player Seen!!!"));
+	DrawDebugSphere(GetWorld(), SeenPawn->GetActorLocation(), 32.f, 12, FColor::Red, false, 10.f);
 
 	AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
 	if(GM)
 	{
-		GM->CompleteMission(SeenPawn, false);
+		GM->CompleteMission(SeenPawn, false);		
 	}
-	
+
+	StopMovement();
 }
 
 void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
@@ -57,6 +57,8 @@ void AAIGuard::OnNoiceHeard(APawn* NoiseInstigator, const FVector& Location, flo
 
 	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrinatation);
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrinatation, this, &AAIGuard::ResetOrinetation, 3.0f);
+	
+	StopMovement();
 }
 
 void AAIGuard::ResetOrinetation()
@@ -64,6 +66,9 @@ void AAIGuard::ResetOrinetation()
 	SetActorRotation(OriginalRotation);
 
 	SetGuardState(EAIState::Idle);
+
+	if(bAllowToPatrol)		// Guard returns to patrolling after being distracted
+		MoveToNextPartolPoint();
 }
 
 void AAIGuard::SetGuardState(EAIState NewState)
@@ -92,20 +97,42 @@ void AAIGuard::MoveToNextPartolPoint()
 	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
 }
 
-// Called when the game starts or when spawned
+void AAIGuard::StopMovement()
+{
+	AController* Controller = GetController();
+	if(Controller)
+	{
+		Controller->StopMovement();
+	}
+}
+
 void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
-
-	OriginalRotation = GetActorRotation();
 	
 	SensingComp->OnSeePawn.AddDynamic(this, &AAIGuard::OnPawnSeen);
 	SensingComp->OnHearNoise.AddDynamic(this, &AAIGuard::OnNoiceHeard);
+
+	OriginalRotation = GetActorRotation();
+
+	if(bAllowToPatrol)
+	{
+		MoveToNextPartolPoint();
+	}
 }
 
-// Called every frame
 void AAIGuard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if(CurrentPatrolPoint)
+	{
+		FVector Delta = GetActorLocation() - CurrentPatrolPoint->GetActorLocation();
+		float DistanceToPatrolPoint = Delta.Size();	// Gets length of the vector
+
+		if(DistanceToPatrolPoint < 100)	// If Gaurd is very close to patrol point he switches to the next one
+		{
+			MoveToNextPartolPoint();
+		}
+	}
 }

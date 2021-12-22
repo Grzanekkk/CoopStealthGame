@@ -47,6 +47,8 @@ protected:
 
 	void MoveToNextPartolPoint();
 
+	void StopMovement();
+
 	
 	FRotator OriginalRotation;
 	
