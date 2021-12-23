@@ -47,6 +47,22 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
+void AFPSCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if(!IsLocallyControlled())	// This code is executed only on OTHER clients
+	{
+		FRotator NewRotation = CameraComponent->GetRelativeRotation();
+		NewRotation.Pitch = RemoteViewPitch * 360.f / 255;			// Allows other players to see where we are looking (Up and Down) // "Uncompresses" uint8
+
+		CameraComponent->SetRelativeRotation(NewRotation);
+	}
+	
+
+	
+}
+
 
 void AFPSCharacter::Fire()
 {
@@ -67,6 +83,7 @@ void AFPSCharacter::Fire()
 		}
 	}
 }
+
 
 void AFPSCharacter::ServerFire_Implementation()	// Executes only on the server
 {
