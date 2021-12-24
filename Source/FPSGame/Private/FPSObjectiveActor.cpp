@@ -23,6 +23,8 @@ AFPSObjectiveActor::AFPSObjectiveActor()
 	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComp->SetupAttachment(MeshComp);
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
@@ -38,18 +40,20 @@ void AFPSObjectiveActor::PlayEffects()
 	UGameplayStatics::SpawnEmitterAtLocation(this, PickupFX, GetActorLocation());
 }
 
-void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
+void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)		// Collision happens on both Client and Server
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
+	
+	PlayEffects();	// We only want particles and sound on Client
 
-	PlayEffects();
-
-	AFPSCharacter* OvCharacter = Cast<AFPSCharacter>(OtherActor);
-
-	if(OvCharacter)
+	if(HasAuthority())
 	{
-		OvCharacter->bIsCarryingObjective = true;
+		AFPSCharacter* OvCharacter = Cast<AFPSCharacter>(OtherActor);
+		if(OvCharacter)
+		{
+			OvCharacter->bIsCarryingObjective = true;
 
-		Destroy();
+			Destroy();
+		}
 	}
 }

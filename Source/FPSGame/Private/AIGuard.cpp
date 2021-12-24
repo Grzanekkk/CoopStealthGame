@@ -4,6 +4,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
+#include "UnrealNetwork.h"
 #include "Perception/PawnSensingComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 
@@ -78,9 +79,8 @@ void AAIGuard::SetGuardState(EAIState NewState)
 		return;
 	}
 
-	GuardState = NewState;
-
-	OnStateChange(NewState);
+	GuardState = NewState;	// Triggers OnRep_GuardState on all the Clients
+	OnRep_GuardState();		// Runs OnRep_GuardState on the Server, it helps when using Listen Server model
 }
 
 void AAIGuard::MoveToNextPartolPoint()
@@ -130,9 +130,24 @@ void AAIGuard::Tick(float DeltaTime)
 		FVector Delta = GetActorLocation() - CurrentPatrolPoint->GetActorLocation();
 		float DistanceToPatrolPoint = Delta.Size();	// Gets length of the vector
 
-		if(DistanceToPatrolPoint < 100)	// If Gaurd is very close to patrol point he switches to the next one
+		if(DistanceToPatrolPoint < 100)	// If Guard is very close to patrol point he switches to the next one
 		{
 			MoveToNextPartolPoint();
 		}
 	}
+}
+
+//////////////////////////////////////////////
+/// Replication Code
+
+void AAIGuard::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+
+	DOREPLIFETIME(AAIGuard, GuardState);	// Applies default replication rule to this variable so it will be replicated to all the Clients connected
+}
+
+void AAIGuard::OnRep_GuardState()	// Only runs on Client
+{
+	OnStateChange(GuardState); // Sends updated GuardState to Blueprint
 }

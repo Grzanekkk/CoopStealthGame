@@ -54,7 +54,11 @@ protected:
 	
 	FTimerHandle TimerHandle_ResetOrinatation;
 
+	UPROPERTY(ReplicatedUsing=OnRep_GuardState)
 	EAIState GuardState;
+
+	UFUNCTION()
+	void OnRep_GuardState();	// This function will run everytime GuardStete is changed // ONLY ON CLIENTS 
 
 	UPROPERTY(EditInstanceOnly, Category = "AI")
 	bool bAllowToPatrol;
