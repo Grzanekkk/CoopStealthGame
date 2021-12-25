@@ -32,7 +32,8 @@ AFPSProjectile::AFPSProjectile()
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 
-	SetReplicates(true);
+	bReplicates = true;
+	//SetReplicates(true);
 	//  SetReplicateMovement(true);		// DO NOT CALL VIRTUAL FUNCTIONS IN THE CONSTRUCTOR 
 }
 

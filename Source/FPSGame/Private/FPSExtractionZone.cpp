@@ -41,6 +41,8 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 	AFPSCharacter* OverlappingPlayer = Cast<AFPSCharacter>(OtherActor);
 	if(OverlappingPlayer)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%s overlapped with extraction zone"), *OverlappingPlayer->GetName()); 
+	
 		if(OverlappingPlayer->bIsCarryingObjective)
 		{
 			AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
