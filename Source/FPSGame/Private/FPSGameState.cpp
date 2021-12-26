@@ -5,21 +5,27 @@
 #include "EngineUtils.h"
 
 #include "FPSCharacter.h"
+#include "FPSPlayerController.h"
 
 ////////////////////////////
 /// GameState is a companion class of GameMode, it`s spawned by GameMode and works ONLY on Clients
 /// Its a "container" for every thing we want to replicate from GameMode
 
 
-void AFPSGameState::MultiCastOnCompleteMission_Implementation(APawn* InstigatroPawn, bool bMissionSuccess)	// Executes separatly on every Client
+void AFPSGameState::MultiCastOnCompleteMission_Implementation(APawn* InstigatorPawn, bool bMissionSuccess)	// Executes on every Client and on the server
 {
-	UE_LOG(LogTemp, Warning, TEXT("MultiCast is running!"));
-	for(TActorIterator<AFPSCharacter> Player(GetWorld()); Player; ++Player)	// Iterating through all Pawn in the level INCLUDING AIGuards
+	for (TPlayerControllerIterator<AFPSPlayerController>::ServerAll It(GetWorld()); It; ++It)
 	{
-		if(Player)		// This will be True only when passing Player Pawn
+		AFPSPlayerController* PC = *It;
+		if (PC && PC->IsLocalController())
 		{
-			Player->DisableInput(nullptr);
-			UE_LOG(LogTemp, Warning, TEXT("Disableing Input!"));
+			PC->OnMissionComplete(InstigatorPawn, bMissionSuccess);
+			APawn* Pawn = It->GetPawn();
+			if (Pawn)
+			{
+				Pawn->DisableInput(nullptr);
+				UE_LOG(LogTemp, Warning, TEXT("Disableing Input!"));
+			}
 		}
 	}
 }

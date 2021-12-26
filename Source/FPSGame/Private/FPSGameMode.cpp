@@ -4,6 +4,7 @@
 
 #include "FPSGameState.h"
 #include "FPSHUD.h"
+#include "FPSPlayerController.h"
 #include "UObject/ConstructorHelpers.h"
 
 /////////////////////
@@ -22,6 +23,7 @@ AFPSGameMode::AFPSGameMode()
 	HUDClass = AFPSHUD::StaticClass();
 
 	GameStateClass = AFPSGameState::StaticClass();
+	// PlayerControllerClass = AFPSPlayerController::StaticClass();		// We want to use BP version
 }
 
 void AFPSGameMode::BeginPlay()
@@ -41,6 +43,4 @@ void AFPSGameMode::CompleteMission(APawn* InstigatroPawn, bool bMissionSuccess)
 	{
 		UE_LOG(LogTemp, Error, TEXT("NO GameState Found!"));
 	}
-
-	OnMissionCompleted(InstigatroPawn, bMissionSuccess);
 }
