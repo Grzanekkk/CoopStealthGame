@@ -46,7 +46,7 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 		if(OverlappingPlayer->bIsCarryingObjective)
 		{
 			AFPSGameMode* GM = Cast<AFPSGameMode>(GetWorld()->GetAuthGameMode());
-			if(GM)
+			if(GM)	// There is no GameMode on Clients, so this code ONLY runs on the server
 			{
 				GM->CompleteMission(OverlappingPlayer, true);
 			}

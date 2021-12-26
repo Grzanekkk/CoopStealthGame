@@ -19,7 +19,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "GameMode")
 	void OnMissionCompleted(APawn* InstigatorPawn, bool bMissionSuccess);
+
+protected:
+	virtual void BeginPlay() override;
 };
-
-
-

@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "UnrealNetwork.h"
 
 AFPSCharacter::AFPSCharacter()
 {
@@ -58,9 +59,6 @@ void AFPSCharacter::Tick(float DeltaTime)
 
 		CameraComponent->SetRelativeRotation(NewRotation);
 	}
-	
-
-	
 }
 
 
@@ -125,4 +123,17 @@ void AFPSCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+
+//////////////////////////////////////////////
+/// Replication Code
+
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray <FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps( OutLifetimeProps );
+
+	// DOREPLIFETIME(AFPSCharacter, bIsCarryingObjective);	// Applies default replication rule to this variable so it will be replicated to all the Clients connected
+
+	DOREPLIFETIME_CONDITION(AFPSCharacter, bIsCarryingObjective, COND_OwnerOnly);	// Only sends replication data packet to player that is controlling this pawn, its used only for the HUD so it doesnt make sense of other players to know about state of this varible
 }

@@ -1,9 +1,16 @@
 // Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
 
 #include "FPSGameMode.h"
+
+#include "FPSGameState.h"
 #include "FPSHUD.h"
-#include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+
+/////////////////////
+/// There is NO instance of GameMode on Clients, so NONE of this code will be run on Clients, it`s SERVER ONLYs
+/// We also cant use MultiCast functions here, or replicate anything
+/// And for this reason we have to use GameState
+
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -13,14 +20,26 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	GameStateClass = AFPSGameState::StaticClass();
+}
+
+void AFPSGameMode::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatroPawn, bool bMissionSuccess)
 {
-	if(InstigatroPawn)
+	AFPSGameState* GS = GetGameState<AFPSGameState>();
+	if(GS)
 	{
-		InstigatroPawn->DisableInput(nullptr);
-		APlayerController* PC = Cast<APlayerController>(InstigatroPawn->GetController());
+		UE_LOG(LogTemp, Warning, TEXT("GameState Found!"));
+		GS->MultiCastOnCompleteMission(InstigatroPawn, bMissionSuccess);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("NO GameState Found!"));
 	}
 
 	OnMissionCompleted(InstigatroPawn, bMissionSuccess);

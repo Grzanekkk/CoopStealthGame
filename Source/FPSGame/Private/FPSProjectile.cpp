@@ -32,8 +32,8 @@ AFPSProjectile::AFPSProjectile()
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 
-	bReplicates = true;
-	//SetReplicates(true);
+	bReplicates = true;					// This is a better way to set replication on pre-init actors :)
+	//	SetReplicates(true);
 	//  SetReplicateMovement(true);		// DO NOT CALL VIRTUAL FUNCTIONS IN THE CONSTRUCTOR 
 }
 
